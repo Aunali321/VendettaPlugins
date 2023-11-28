@@ -15,9 +15,9 @@ export default () => {
                  title='SentiraAI API Key'
                  leading={<FormRow.Icon source={icons.Edit} />}
                  placeholder={"Enter your SentiraAI API Key"}
-                  value={storage.authToken}
-                  onChange={v => {
-                        storage.authToken = v;
+                  value={storage.apiKey}
+                  onChange={(v: string) => {
+                        storage.apiKey = v;
                   }}
                />
                 <FormDivider />
@@ -25,8 +25,7 @@ export default () => {
                     label="Log out of SentiraAI"
                     subLabel="This will clear your API token."
                     leading={<FormRow.Icon source={icons.Delete} />}
-                    disabled={storage.authToken.length === 0}
-                    onPress={() => storage.authToken = ""}
+                    onPress={() => storage.apiKey = ""}
                 />
             </FormSection>
         </RN.ScrollView>
