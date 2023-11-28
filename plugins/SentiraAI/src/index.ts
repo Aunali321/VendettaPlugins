@@ -1,6 +1,5 @@
 import { logger, storage } from "@vendetta";
 import { registerCommand } from "@vendetta/commands";
-import { ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
 import Settings from "./Settings";
 import { SentiraAI } from "./lib/api";
 
@@ -14,18 +13,26 @@ export const onLoad = () => {
         displayName: "Summarize",
         description: "Summarize text",
         displayDescription: "Summarize text",
+        applicationId: "-1",
+        inputType: 1,
+        type: 1,
         options: [
             {
                 name: "message",
+                displayName: "Message to summarize",
                 description: "Message to summarize",
+                displayDescription: "Message to summarize",
                 type: ApplicationCommandOptionType.STRING,
                 required: true
             },
             {
                 name: "length",
+                displayName: "Length of summary",
                 description: "Length of summary",
+                displayDescription: "Length of summary",
                 type: ApplicationCommandOptionType.STRING,
                 required: false,
+                // @ts-ignore
                 choices: [
                     {
                         name: "Short",
@@ -46,6 +53,7 @@ export const onLoad = () => {
                 description: "Format of summary",
                 type: ApplicationCommandOptionType.STRING,
                 required: false,
+                // @ts-ignore
                 choices: [
                     {
                         name: "Paragraph",
@@ -62,6 +70,7 @@ export const onLoad = () => {
                 description: "Model to use",
                 type: ApplicationCommandOptionType.STRING,
                 required: true,
+                // @ts-ignore
                 choices: [
                     {
                         name: "Fast",
@@ -82,9 +91,6 @@ export const onLoad = () => {
                 ]
             }
         ],
-        applicationId: "-1",
-        inputType: 1,
-        type: 1,
 
 
         execute: async (args, ctx) => {
@@ -92,7 +98,7 @@ export const onLoad = () => {
             const length = args[1];
             const format = args[2];
             const model = args[3];
-            const sentiraAI = new SentiraAI('http://sentiraai.auna.li', storage.apiKey);
+            const sentiraAI = new SentiraAI('http://sentiraai.auna.li', storage.apiKey || '54321');
             sentiraAI.summarize({
                 userId: '123',
                 text: message,
