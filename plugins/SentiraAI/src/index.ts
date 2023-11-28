@@ -1,6 +1,6 @@
 import { logger, storage } from "@vendetta";
 import { registerCommand } from "@vendetta/commands";
-import { ApplicationCommandInputType, ApplicationCommandType, ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
+import { ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
 import Settings from "./Settings";
 import { SentiraAI } from "./lib/api";
 
@@ -83,8 +83,8 @@ export const onLoad = () => {
             }
         ],
         applicationId: "-1",
-        type: ApplicationCommandType.CHAT as number,
-        inputType: ApplicationCommandInputType.BUILT_IN_TEXT as number,
+        inputType: 1,
+        type: 1,
 
 
         execute: async (args, ctx) => {
