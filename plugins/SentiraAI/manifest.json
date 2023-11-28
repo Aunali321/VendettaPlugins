@@ -1,0 +1,14 @@
+{
+  "name": "SentiraAI Plugin",
+  "description": "Transcibe and summarize audio and video files using SentiraAI API",
+  "authors": [
+    {
+      "name": "Cossale",
+      "id": "164673069212893184"
+    }
+  ],
+  "main": "src/index.ts",
+  "vendetta": {
+    "icon": "ic_badge_staff"
+  }
+}
