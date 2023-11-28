@@ -1,6 +1,6 @@
 import { logger, storage } from "@vendetta";
 import { registerCommand } from "@vendetta/commands";
-import { ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
+import { ApplicationCommandInputType, ApplicationCommandType, ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
 import Settings from "./Settings";
 import { SentiraAI } from "./lib/api";
 
