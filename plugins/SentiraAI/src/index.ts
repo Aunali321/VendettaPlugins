@@ -61,7 +61,7 @@ export const onLoad = () => {
                 name: "model",
                 description: "Model to use",
                 type: ApplicationCommandOptionType.STRING,
-                required: false,
+                required: true,
                 choices: [
                     {
                         name: "Fast",
@@ -83,8 +83,8 @@ export const onLoad = () => {
             }
         ],
         applicationId: "-1",
-        inputType: 1,
-        type: 1,
+        type: ApplicationCommandType.CHAT as number,
+        inputType: ApplicationCommandInputType.BUILT_IN_TEXT as number,
 
 
         execute: async (args, ctx) => {
