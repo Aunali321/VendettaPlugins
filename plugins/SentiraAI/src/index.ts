@@ -11,7 +11,9 @@ export const onLoad = () => {
 
     commands.push(registerCommand({
         name: "summarize",
+        displayName: "Summarize",
         description: "Summarize text",
+        displayDescription: "Summarize text",
         options: [
             {
                 name: "message",
@@ -80,6 +82,11 @@ export const onLoad = () => {
                 ]
             }
         ],
+        applicationId: "-1",
+        inputType: 1,
+        type: 1,
+
+
         execute: async (args, ctx) => {
             const message = args[0];
             const length = args[1];
