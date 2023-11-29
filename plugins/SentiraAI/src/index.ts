@@ -52,7 +52,9 @@ export const onLoad = () => {
             },
             {
                 name: "format",
+                displayName: "Format of summary",
                 description: "Format of summary",
+                displayDescription: "Format of summary",
                 type: ApplicationCommandOptionType.STRING,
                 required: false,
                 // @ts-ignore
@@ -69,7 +71,9 @@ export const onLoad = () => {
             },
             {
                 name: "model",
+                displayName: "Model to use",
                 description: "Model to use",
+                displayDescription: "Model to use",
                 type: ApplicationCommandOptionType.STRING,
                 required: true,
                 // @ts-ignore
