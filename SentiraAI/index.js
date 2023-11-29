@@ -218,17 +218,17 @@ const onLoad = function() {
     ],
     execute: async function(args, ctx) {
       _vendetta.logger.info("SentiraAI summarize command executed");
-      const message = args.message || "test";
-      const length = args.length || "medium";
-      const format = args.format || "paragraph";
-      const model = args.model || "command-light";
+      const message = args.message;
+      const length = args.length;
+      const format = args.format;
+      const model = args.model;
       const sentiraAI = new SentiraAI("http://sentiraai.auna.li", _vendetta.storage.apiKey || "54321");
       sentiraAI.summarize({
         userId: "123",
         text: message,
         summaryLength: length,
         summaryFormat: format,
-        model
+        model: model || "command-light"
       }).then(function(response) {
         console.log(response);
       }).catch(function(error) {
