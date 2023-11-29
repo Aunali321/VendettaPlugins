@@ -1,4 +1,5 @@
 // Implementation of API for SentiraAI
+import { logger } from "@vendetta";
 import { SummarizeResponse, SummarizeRequestBody } from "./types";
 
 export class SentiraAI {
@@ -6,11 +7,13 @@ export class SentiraAI {
     private readonly apiKey: string;
 
     constructor(baseUrl: string, apiKey: string) {
+        logger.info("SentiraAI API initialized");
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
     }
 
     public async summarize(body: SummarizeRequestBody): Promise<SummarizeResponse> {
+        logger.info("Summarize method called");
         const response = await fetch(`${this.baseUrl}/summarize`, {
             method: 'POST',
             headers: {

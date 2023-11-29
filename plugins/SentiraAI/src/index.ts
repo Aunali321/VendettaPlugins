@@ -8,6 +8,7 @@ let commands = []
 export const onLoad = () => {
     logger.info("SentiraAI loaded");
 
+    logger.info("Registering commands");
     commands.push(registerCommand({
         name: "summarize",
         displayName: "Summarize",
@@ -94,10 +95,11 @@ export const onLoad = () => {
 
 
         execute: async (args, ctx) => {
-            const message = args[0];
-            const length = args[1];
-            const format = args[2];
-            const model = args[3];
+            logger.info("SentiraAI summarize command executed");
+            const message = args.message || 'test';
+            const length = args.length || 'medium';
+            const format = args.format || 'paragraph';
+            const model = args.model || 'command-light';
             const sentiraAI = new SentiraAI('http://sentiraai.auna.li', storage.apiKey || '54321');
             sentiraAI.summarize({
                 userId: '123',
@@ -115,6 +117,7 @@ export const onLoad = () => {
 }
 
 export const onUnload = () => {
+    logger.info("SentiraAI unloaded");
     for (const unregisterCommands of commands) unregisterCommands()
 }
 
