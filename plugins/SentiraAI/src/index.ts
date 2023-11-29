@@ -2,6 +2,7 @@ import { logger, storage } from "@vendetta";
 import { registerCommand } from "@vendetta/commands";
 import Settings from "./Settings";
 import { SentiraAI } from "./lib/api";
+import { ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
 
 let commands = []
 
