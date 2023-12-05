@@ -35,8 +35,8 @@ export type SummaryModel =
 export const FriendlyModelNames: Record<SummaryModel, string> = {
     command: "Slow",
     "command-light": "Fast",
-    "command-nightly": "Slow nightly",
-    "command-light-nightly": "Fast nightly",
+    "command-nightly": "Slow (Nightly)",
+    "command-light-nightly": "Fast (Nightly)",
 };
 
 export interface SummarizeRequestBody {
