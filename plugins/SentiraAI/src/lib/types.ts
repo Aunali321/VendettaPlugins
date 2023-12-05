@@ -10,10 +10,39 @@ export interface Response {
     summary: string;
 }
 
+export type SummaryLength = "auto" | "short" | "medium" | "long";
+
+export const FriendlyLengthNames: Record<SummaryLength, string> = {
+    auto: "Auto",
+    short: "Short",
+    medium: "Medium",
+    long: "Long",
+};
+
+export type SummaryFormat = "paragraph" | "bullets";
+
+export const FriendlyFormatNames: Record<SummaryFormat, string> = {
+    paragraph: "Paragraph",
+    bullets: "Bullets",
+};
+
+export type SummaryModel =
+    | "command"
+    | "command-light"
+    | "command-nightly"
+    | "command-light-nightly";
+
+export const FriendlyModelNames: Record<SummaryModel, string> = {
+    command: "Slow",
+    "command-light": "Fast",
+    "command-nightly": "Slow nightly",
+    "command-light-nightly": "Fast nightly",
+};
+
 export interface SummarizeRequestBody {
     userId: string;
     text: string;
-    summaryLength?: "short" | "medium" | "long";
-    summaryFormat?: "paragraph" | "bullets";
-    model: 'command' | 'command-light' | 'command-nightly' | 'command-light-nightly';
+    summaryLength?: SummaryLength;
+    summaryFormat?: SummaryFormat;
+    model: SummaryModel;
 }
