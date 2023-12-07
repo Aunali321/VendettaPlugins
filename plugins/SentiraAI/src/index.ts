@@ -79,7 +79,6 @@ export default {
                     );
                     let response = sentiraAI
                         .summarize({
-                            userId: "123",
                             text: message,
                             summaryLength: length,
                             summaryFormat: format,

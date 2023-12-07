@@ -40,7 +40,6 @@ export const FriendlyModelNames: Record<SummaryModel, string> = {
 };
 
 export interface SummarizeRequestBody {
-    userId: string;
     text: string;
     summaryLength?: SummaryLength;
     summaryFormat?: SummaryFormat;
