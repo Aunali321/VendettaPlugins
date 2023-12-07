@@ -291,7 +291,7 @@ var index = {
         const format = settings.format;
         const model = settings.model;
         const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
-        let response = sentiraAI.summarize({
+        let response = await sentiraAI.summarize({
           text: message,
           summaryLength: length,
           summaryFormat: format,
