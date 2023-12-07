@@ -3,6 +3,8 @@ import { storage } from "@vendetta/plugin";
 import { SentiraAI } from "./lib/api";
 import Settings from "./settings";
 import { registerCommand } from "@vendetta/commands";
+import { findByProps } from "@vendetta/metro";
+const MessageActions = findByProps("sendMessage", "receiveMessage");
 import {
     FriendlyLengthNames,
     SummaryFormat,
@@ -65,7 +67,7 @@ export default {
                 inputType: 1,
                 type: 1,
 
-                execute: async (args) => {
+                execute: async (args, ctx) => {
                     logger.info("SentiraAI summarize command executed");
                     const message = args[0]?.message;
                     const length = args[0]?.length;
@@ -75,7 +77,7 @@ export default {
                         "http://sentiraai.auna.li",
                         storage.apiKey || "54321"
                     );
-                    sentiraAI
+                    let response = sentiraAI
                         .summarize({
                             userId: "123",
                             text: message,
@@ -83,12 +85,10 @@ export default {
                             summaryFormat: format,
                             model: model,
                         })
-                        .then((response) => {
-                            console.log(response);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                        });
+
+                    MessageActions.sendMessage(ctx.channel.id, {
+                        content: response
+                    });
                 },
             })
         );
