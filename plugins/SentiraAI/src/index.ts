@@ -83,11 +83,16 @@ export default {
                             summaryLength: length,
                             summaryFormat: format,
                             model: model,
-                        })
-
-                    MessageActions.sendMessage(ctx.channel.id, {
-                        content: response
-                    });
+                        }).then((response) => {
+                            MessageActions.sendMessage(ctx.channel.id, {
+                                content: response
+                            });
+                        }
+                        ).catch((error) => {
+                            MessageActions.sendMessage(ctx.channel.id, {
+                                content: error
+                            });
+                        });
                 },
             })
         );
