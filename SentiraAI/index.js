@@ -37,6 +37,7 @@ function _create_class(Constructor, protoProps, staticProps) {
       key: "summarize",
       value: async function summarize(body) {
         _vendetta.logger.info("Summarize method called");
+        _vendetta.logger.info(`Summarize request body: ${JSON.stringify(body)}`);
         const response = await fetch(`${this.baseUrl}/summarize`, {
           method: "POST",
           headers: {
@@ -49,6 +50,7 @@ function _create_class(Constructor, protoProps, staticProps) {
           throw new Error(`Failed to summarize: ${response.statusText}`);
         }
         const data = await response.json();
+        _vendetta.logger.info(`Summarize response: ${JSON.stringify(data)}`);
         return {
           result: data.result,
           creditsUsed: data.creditsUsed,
@@ -236,7 +238,7 @@ let patches = [];
 const settings = plugin.storage;
 settings.model = "command-light";
 settings.format = "paragraph";
-settings.defaultLength = "auto";
+settings.defaultLength = "medium";
 const lengthChoices = [
   "auto",
   "short",
