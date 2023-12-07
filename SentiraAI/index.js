@@ -1,4 +1,4 @@
-(function(exports,_vendetta,plugin,assets,common,components,storage,commands,toasts){'use strict';function _class_call_check(instance, Constructor) {
+(function(exports,_vendetta,plugin,assets,common,components,storage,commands,metro,toasts){'use strict';function _class_call_check(instance, Constructor) {
     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }function _defineProperties(target, props) {
     for(var i = 0; i < props.length; i++){
@@ -231,7 +231,8 @@ function Settings() {
       }
     });
   }));
-}let patches = [];
+}const MessageActions = metro.findByProps("sendMessage", "receiveMessage");
+let patches = [];
 const settings = plugin.storage;
 settings.model = "command-light";
 settings.format = "paragraph";
@@ -281,23 +282,22 @@ var index = {
       applicationId: -1,
       inputType: 1,
       type: 1,
-      execute: async function(args) {
+      execute: async function(args, ctx) {
         _vendetta.logger.info("SentiraAI summarize command executed");
         const message = args[0]?.message;
         const length = args[0]?.length;
         const format = settings.format;
         const model = settings.model;
         const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
-        sentiraAI.summarize({
+        let response = sentiraAI.summarize({
           userId: "123",
           text: message,
           summaryLength: length,
           summaryFormat: format,
           model
-        }).then(function(response) {
-          console.log(response);
-        }).catch(function(error) {
-          console.error(error);
+        });
+        MessageActions.sendMessage(ctx.channel.id, {
+          content: response
         });
       }
     }));
@@ -308,4 +308,4 @@ var index = {
       unpatch();
   },
   settings: Settings
-};exports.default=index;exports.settings=settings;Object.defineProperty(exports,'__esModule',{value:true});return exports;})({},vendetta,vendetta.plugin,vendetta.ui.assets,vendetta.metro.common,vendetta.ui.components,vendetta.storage,vendetta.commands,vendetta.ui.toasts);
+};exports.default=index;exports.settings=settings;Object.defineProperty(exports,'__esModule',{value:true});return exports;})({},vendetta,vendetta.plugin,vendetta.ui.assets,vendetta.metro.common,vendetta.ui.components,vendetta.storage,vendetta.commands,vendetta.metro,vendetta.ui.toasts);
