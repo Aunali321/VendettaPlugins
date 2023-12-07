@@ -291,14 +291,19 @@ var index = {
         const format = settings.format;
         const model = settings.model;
         const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
-        let response = await sentiraAI.summarize({
+        await sentiraAI.summarize({
           text: message,
           summaryLength: length,
           summaryFormat: format,
           model
-        });
-        MessageActions.sendMessage(ctx.channel.id, {
-          content: response
+        }).then(function(response2) {
+          MessageActions.sendMessage(ctx.channel.id, {
+            content: response2
+          });
+        }).catch(function(error) {
+          MessageActions.sendMessage(ctx.channel.id, {
+            content: error
+          });
         });
       }
     }));
