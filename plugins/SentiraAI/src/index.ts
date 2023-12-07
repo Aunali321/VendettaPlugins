@@ -1,129 +1,101 @@
-import { logger, storage } from "@vendetta";
-import { registerCommand } from "@vendetta/commands";
-import Settings from "./Settings";
+import { logger } from "@vendetta";
+import { storage } from "@vendetta/plugin";
 import { SentiraAI } from "./lib/api";
-import { ApplicationCommandOptionType } from "./lib/ApplicationCommandTypes";
+import Settings from "./settings";
+import { registerCommand } from "@vendetta/commands";
+import {
+    FriendlyLengthNames,
+    SummaryFormat,
+    SummaryLength,
+    SummaryModel,
+} from "./lib/types";
 
-let commands = []
+let patches = [];
 
-export const onLoad = () => {
-    logger.info("SentiraAI loaded");
+export const settings: {
+    model?: SummaryModel;
+    format?: SummaryFormat;
+    defaultLength?: SummaryLength;
+    apiKey?: string;
+} = storage;
 
-    logger.info("Registering commands");
-    commands.push(registerCommand({
-        name: "summarize",
-        displayName: "Summarize",
-        description: "Summarize text",
-        displayDescription: "Summarize text",
-        applicationId: "-1",
-        inputType: 1,
-        type: 1,
-        options: [
-            {
-                name: "message",
-                displayName: "Message to summarize",
-                description: "Message to summarize",
-                displayDescription: "Message to summarize",
-                type: ApplicationCommandOptionType.STRING,
-                required: true
-            },
-            {
-                name: "length",
-                displayName: "Length of summary",
-                description: "Length of summary",
-                displayDescription: "Length of summary",
-                type: ApplicationCommandOptionType.STRING,
-                required: false,
+settings.model = "command-light";
+settings.format = "paragraph";
+settings.defaultLength = "auto";
+
+const lengthChoices: SummaryLength[] = ["auto", "short", "medium", "long"];
+
+export default {
+    onLoad: () => {
+        logger.info("SentiraAI loaded");
+
+        logger.info("Registering commands");
+        patches.push(
+            registerCommand({
+                name: "summarize",
+                displayName: "Summarize",
+                description: "Summarize text",
+                displayDescription: "Summarize text",
+                options: [
+                    {
+                        name: "message",
+                        displayName: "message",
+                        description: "Message",
+                        displayDescription: "Message",
+                        required: true,
+                        type: 3,
+                    },
+                    {
+                        name: "length",
+                        displayName: "length",
+                        description: "Length of summary",
+                        displayDescription: "Length of summary",
+                        required: true,
+                        type: 3,
+                        // @ts-ignore
+                        choices: lengthChoices.map((length) => ({
+                            name: FriendlyLengthNames[length],
+                            displayName: FriendlyLengthNames[length],
+                            value: length,
+                        })),
+                    },
+                ],
                 // @ts-ignore
-                choices: [
-                    {
-                        name: "Short",
-                        value: "short"
-                    },
-                    {
-                        name: "Medium",
-                        value: "medium"
-                    },
-                    {
-                        name: "Long",
-                        value: "long"
-                    }
-                ]
-            },
-            {
-                name: "format",
-                displayName: "Format of summary",
-                description: "Format of summary",
-                displayDescription: "Format of summary",
-                type: ApplicationCommandOptionType.STRING,
-                required: false,
-                // @ts-ignore
-                choices: [
-                    {
-                        name: "Paragraph",
-                        value: "paragraph"
-                    },
-                    {
-                        name: "Bullets",
-                        value: "bullets"
-                    }
-                ]
-            },
-            {
-                name: "model",
-                displayName: "Model to use",
-                description: "Model to use",
-                displayDescription: "Model to use",
-                type: ApplicationCommandOptionType.STRING,
-                required: true,
-                // @ts-ignore
-                choices: [
-                    {
-                        name: "Fast",
-                        value: "command-light"
-                    },
-                    {
-                        name: "Slow",
-                        value: "command"
-                    },
-                    {
-                        name: "Fast Nightly",
-                        value: "command-light-nightly"
-                    },
-                    {
-                        name: "Slow Nightly",
-                        value: "command-nightly"
-                    }
-                ]
-            }
-        ],
+                applicationId: -1,
+                inputType: 1,
+                type: 1,
 
-
-        execute: async (args, ctx) => {
-            logger.info("SentiraAI summarize command executed");
-            const message = args.message;
-            const length = args.length;
-            const format = args.format;
-            const model = args.model;
-            const sentiraAI = new SentiraAI('http://sentiraai.auna.li', storage.apiKey || '54321');
-            sentiraAI.summarize({
-                userId: '123',
-                text: message,
-                summaryLength: length,
-                summaryFormat: format,
-                model: model || 'command-light'
-            }).then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.error(error);
-            });
-        }
-    }))
-}
-
-export const onUnload = () => {
-    logger.info("SentiraAI unloaded");
-    for (const unregisterCommands of commands) unregisterCommands()
-}
-
-export const settings = Settings
+                execute: async (args) => {
+                    logger.info("SentiraAI summarize command executed");
+                    const message = args[0]?.message;
+                    const length = args[0]?.length;
+                    const format = settings.format;
+                    const model = settings.model;
+                    const sentiraAI = new SentiraAI(
+                        "http://sentiraai.auna.li",
+                        storage.apiKey || "54321"
+                    );
+                    sentiraAI
+                        .summarize({
+                            userId: "123",
+                            text: message,
+                            summaryLength: length,
+                            summaryFormat: format,
+                            model: model,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                },
+            })
+        );
+    },
+    onUnload: () => {
+        logger.info("SentiraAI unloaded");
+        for (const unpatch of patches) unpatch();
+    },
+    settings: Settings,
+};
