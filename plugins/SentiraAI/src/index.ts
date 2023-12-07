@@ -77,7 +77,7 @@ export default {
                         "http://sentiraai.auna.li",
                         storage.apiKey || "54321"
                     );
-                    let response = sentiraAI
+                    let response = await sentiraAI
                         .summarize({
                             text: message,
                             summaryLength: length,
