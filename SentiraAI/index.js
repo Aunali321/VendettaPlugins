@@ -290,7 +290,6 @@ var index = {
         const model = settings.model;
         const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
         let response = sentiraAI.summarize({
-          userId: "123",
           text: message,
           summaryLength: length,
           summaryFormat: format,
