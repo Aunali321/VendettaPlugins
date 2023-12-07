@@ -14,6 +14,7 @@ export class SentiraAI {
 
     public async summarize(body: SummarizeRequestBody): Promise<SummarizeResponse> {
         logger.info("Summarize method called");
+        logger.info(`Summarize request body: ${JSON.stringify(body)}`);
         const response = await fetch(`${this.baseUrl}/summarize`, {
             method: 'POST',
             headers: {
@@ -28,6 +29,7 @@ export class SentiraAI {
         }
 
         const data = await response.json();
+        logger.info(`Summarize response: ${JSON.stringify(data)}`);
         return {
             result: data.result,
             creditsUsed: data.creditsUsed,

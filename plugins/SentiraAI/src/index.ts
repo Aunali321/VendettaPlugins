@@ -23,7 +23,7 @@ export const settings: {
 
 settings.model = "command-light";
 settings.format = "paragraph";
-settings.defaultLength = "auto";
+settings.defaultLength = "medium";
 
 const lengthChoices: SummaryLength[] = ["auto", "short", "medium", "long"];
 
