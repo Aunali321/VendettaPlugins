@@ -5,6 +5,8 @@ import Settings from "./settings";
 import { registerCommand } from "@vendetta/commands";
 import { findByProps } from "@vendetta/metro";
 const MessageActions = findByProps("sendMessage", "receiveMessage");
+const { sendBotMessage } = findByProps("sendBotMessage")
+
 import {
     FriendlyLengthNames,
     SummaryFormat,
@@ -84,11 +86,17 @@ export default {
                             summaryFormat: format,
                             model: model,
                         }).then((response) => {
+                            sendBotMessage(ctx.channel.id, {
+                                response
+                            });
                             MessageActions.sendMessage(ctx.channel.id, {
-                                content: response
+                                content: response.response
                             });
                         }
                         ).catch((error) => {
+                            sendBotMessage(ctx.channel.id, {
+                                error
+                            });
                             MessageActions.sendMessage(ctx.channel.id, {
                                 content: error
                             });
