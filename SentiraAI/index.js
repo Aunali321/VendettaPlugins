@@ -296,9 +296,9 @@ var index = {
           summaryLength: length,
           summaryFormat: format,
           model
-        }).then(function(response2) {
+        }).then(function(response) {
           MessageActions.sendMessage(ctx.channel.id, {
-            content: response2
+            content: response
           });
         }).catch(function(error) {
           MessageActions.sendMessage(ctx.channel.id, {
