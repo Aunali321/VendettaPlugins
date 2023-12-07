@@ -287,7 +287,7 @@ var index = {
       execute: async function(args, ctx) {
         _vendetta.logger.info("SentiraAI summarize command executed");
         const message = args[0].value;
-        const length = args[0]?.value;
+        const length = args[1]?.value;
         const format = settings.format;
         const model = settings.model;
         const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
