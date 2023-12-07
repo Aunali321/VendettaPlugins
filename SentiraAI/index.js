@@ -234,6 +234,7 @@ function Settings() {
     });
   }));
 }const MessageActions = metro.findByProps("sendMessage", "receiveMessage");
+const { sendBotMessage } = metro.findByProps("sendBotMessage");
 let patches = [];
 const settings = plugin.storage;
 settings.model = "command-light";
@@ -297,10 +298,16 @@ var index = {
           summaryFormat: format,
           model
         }).then(function(response) {
+          sendBotMessage(ctx.channel.id, {
+            response
+          });
           MessageActions.sendMessage(ctx.channel.id, {
-            content: response
+            content: response.response
           });
         }).catch(function(error) {
+          sendBotMessage(ctx.channel.id, {
+            error
+          });
           MessageActions.sendMessage(ctx.channel.id, {
             content: error
           });
