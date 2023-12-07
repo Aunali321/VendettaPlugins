@@ -70,7 +70,7 @@ export default {
                 execute: async (args, ctx) => {
                     logger.info("SentiraAI summarize command executed");
                     const message = args[0].value;
-                    const length = args[0]?.value;
+                    const length = args[1]?.value;
                     const format = settings.format;
                     const model = settings.model;
                     const sentiraAI = new SentiraAI(
