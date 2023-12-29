@@ -69,45 +69,54 @@ export default {
                 inputType: 1,
                 type: 1,
 
-                execute: async (args, ctx) => {
-                    logger.info("SentiraAI summarize command executed");
-                    const message = args[0].value;
-                    const length = args[1]?.value;
-                    const format = settings.format;
-                    const model = settings.model;
-                    const sentiraAI = new SentiraAI(
-                        "http://sentiraai.auna.li",
-                        storage.apiKey || "54321"
-                    );
-                    await sentiraAI
-                        .summarize({
-                            text: message,
-                            summaryLength: length,
-                            summaryFormat: format,
-                            model: model,
-                        }).then((response) => {
-                            sendBotMessage(ctx.channel.id, {
-                                response
-                            });
-                            MessageActions.sendMessage(ctx.channel.id, {
-                                content: response.response
-                            });
-                        }
-                        ).catch((error) => {
-                            sendBotMessage(ctx.channel.id, {
-                                error
-                            });
-                            MessageActions.sendMessage(ctx.channel.id, {
-                                content: error
-                            });
-                        });
-                },
+                execute: getSummary,
             })
         );
+
+        async function getSummary(args, ctx) {
+            logger.info("SentiraAI summarize command executed");
+            const message = args[0].value;
+            const length = args[1]?.value;
+            const format = settings.format;
+            const model = settings.model;
+            const sentiraAI = new SentiraAI(
+                "http://sentiraai.auna.li",
+                storage.apiKey || "54321"
+            );
+            let summary = await sentiraAI
+                .summarize({
+                    text: message,
+                    summaryLength: length,
+                    summaryFormat: format,
+                    model: model,
+                })
+
+            return {
+                content: summary.response
+            }
+            // .then((response) => {
+            //     sendBotMessage(ctx.channel.id, {
+            //         response
+            //     });
+            //     MessageActions.sendMessage(ctx.channel.id, {
+            //         content: response.response
+            //     });
+            // }
+            // ).catch((error) => {
+            //     sendBotMessage(ctx.channel.id, {
+            //         error
+            //     });
+            //     MessageActions.sendMessage(ctx.channel.id, {
+            //         content: error
+            //     });
+            // });
+        }
     },
+
     onUnload: () => {
         logger.info("SentiraAI unloaded");
         for (const unpatch of patches) unpatch();
     },
     settings: Settings,
+
 };
