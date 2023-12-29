@@ -233,8 +233,8 @@ function Settings() {
       }
     });
   }));
-}const MessageActions = metro.findByProps("sendMessage", "receiveMessage");
-const { sendBotMessage } = metro.findByProps("sendBotMessage");
+}metro.findByProps("sendMessage", "receiveMessage");
+metro.findByProps("sendBotMessage");
 let patches = [];
 const settings = plugin.storage;
 settings.model = "command-light";
@@ -285,35 +285,25 @@ var index = {
       applicationId: -1,
       inputType: 1,
       type: 1,
-      execute: async function(args, ctx) {
-        _vendetta.logger.info("SentiraAI summarize command executed");
-        const message = args[0].value;
-        const length = args[1]?.value;
-        const format = settings.format;
-        const model = settings.model;
-        const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
-        await sentiraAI.summarize({
-          text: message,
-          summaryLength: length,
-          summaryFormat: format,
-          model
-        }).then(function(response) {
-          sendBotMessage(ctx.channel.id, {
-            response
-          });
-          MessageActions.sendMessage(ctx.channel.id, {
-            content: response.response
-          });
-        }).catch(function(error) {
-          sendBotMessage(ctx.channel.id, {
-            error
-          });
-          MessageActions.sendMessage(ctx.channel.id, {
-            content: error
-          });
-        });
-      }
+      execute: getSummary
     }));
+    async function getSummary(args, ctx) {
+      _vendetta.logger.info("SentiraAI summarize command executed");
+      const message = args[0].value;
+      const length = args[1]?.value;
+      const format = settings.format;
+      const model = settings.model;
+      const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
+      let summary = await sentiraAI.summarize({
+        text: message,
+        summaryLength: length,
+        summaryFormat: format,
+        model
+      });
+      return {
+        content: summary.response
+      };
+    }
   },
   onUnload: function() {
     _vendetta.logger.info("SentiraAI unloaded");
