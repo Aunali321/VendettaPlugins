@@ -10,8 +10,8 @@ export async function getSummary(args) {
     const format = settings.format;
     const model = settings.model;
     const sentiraAI = new SentiraAI(
-        "http://sentiraai.auna.li",
-        storage["apiKey"] || "54321"
+        "https://api.sentiraai.com",
+        storage["apiKey"]
     );
     let summary = await sentiraAI.summarize({
         text: message,
