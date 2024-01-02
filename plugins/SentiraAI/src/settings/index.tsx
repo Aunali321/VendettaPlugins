@@ -10,7 +10,7 @@ import { settings } from ".."
 import icons from ".././common/icons";
 import Model from "./Model";
 import Format from "./Format";
-import length from "./length";
+import DefaultLength from "./DefaultLength";
 import { FriendlyFormatNames, FriendlyLengthNames, FriendlyModelNames } from "../lib/types";
 const { FormRow, FormDivider, FormInput, FormSection } = Forms;
 const { ScrollView } = ReactNative;
@@ -36,10 +36,10 @@ export default () => {
         },
         {
             label: "Default length of summary",
-            sublabel: FriendlyLengthNames[settings.length],
+            sublabel: FriendlyLengthNames[settings.defaultLength],
             icon: "ic_activity_24px",
-            render: length,
-            renderTitle: "Length"
+            render: DefaultLength,
+            renderTitle: "DefaultLength"
         }
     ]
 

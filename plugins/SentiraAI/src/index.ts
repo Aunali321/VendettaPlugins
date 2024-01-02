@@ -16,13 +16,13 @@ let patches = [];
 export const settings: {
     model?: SummaryModel;
     format?: SummaryFormat;
-    length?: SummaryLength;
+    defaultLength?: SummaryLength;
     apiKey?: string;
 } = storage;
 
 settings.model = "command-light";
 settings.format = "paragraph";
-settings.length = "medium";
+settings.defaultLength = "medium";
 
 const lengthChoices: SummaryLength[] = ["auto", "short", "medium", "long"];
 

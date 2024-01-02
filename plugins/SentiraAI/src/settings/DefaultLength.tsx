@@ -19,14 +19,14 @@ export default () => {
                 <FormRadioRow
                     label={FriendlyLengthNames[length]}
                     onPress={() => {
-                        if (settings.length == length) return;
-                        settings.length = length;
+                        if (settings.defaultLength == length) return;
+                        settings.defaultLength = length;
                         showToast(
                             `Saved format to ${FriendlyLengthNames[length]}`,
                             getAssetIDByName("check")
                         );
                     }}
-                    selected={settings.length === length}
+                    selected={settings.defaultLength === length}
                 />
             ))}
         </ScrollView>
