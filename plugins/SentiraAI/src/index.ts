@@ -92,7 +92,7 @@ export default {
                 })
 
             return {
-                content: summary.response
+                content: summary.response.summary
             }
             // .then((response) => {
             //     sendBotMessage(ctx.channel.id, {
