@@ -16,7 +16,7 @@ const FriendlyModelNames = {
   "command-light": "Fast",
   "command-nightly": "Slow (Nightly)",
   "command-light-nightly": "Fast (Nightly)"
-};const { FormRow: FormRow$3 } = components.Forms;
+};const { FormRadioRow: FormRadioRow$2 } = components.Forms;
 const { ScrollView: ScrollView$3 } = common.ReactNative;
 const models = [
   "command",
@@ -31,20 +31,18 @@ function Model() {
       flex: 1
     }
   }, models.map(function(model) {
-    return /* @__PURE__ */ common.React.createElement(FormRow$3, {
+    return /* @__PURE__ */ common.React.createElement(FormRadioRow$2, {
       label: FriendlyModelNames[model],
-      trailing: function() {
-        return /* @__PURE__ */ common.React.createElement(FormRow$3.Arrow, null);
-      },
       onPress: function() {
         if (settings.model === model)
           return;
         settings.model = model;
         toasts.showToast(`Saved model to ${FriendlyModelNames[model]}`, assets.getAssetIDByName("check"));
-      }
+      },
+      selected: settings.model === model
     });
   }));
-}const { FormRow: FormRow$2 } = components.Forms;
+}const { FormRadioRow: FormRadioRow$1 } = components.Forms;
 const { ScrollView: ScrollView$2 } = common.ReactNative;
 const formats = [
   "paragraph",
@@ -57,21 +55,19 @@ function Format() {
       flex: 1
     }
   }, formats.map(function(format) {
-    return /* @__PURE__ */ common.React.createElement(FormRow$2, {
+    return /* @__PURE__ */ common.React.createElement(FormRadioRow$1, {
       label: FriendlyFormatNames[format],
-      trailing: function() {
-        return /* @__PURE__ */ common.React.createElement(FormRow$2.Arrow, null);
-      },
       onPress: function() {
         if (settings.format === format)
           return;
         settings.format = format;
         toasts.showToast(`Saved model to ${FriendlyFormatNames[format]}`, assets.getAssetIDByName("check"));
-      }
+      },
+      selected: settings.format === format
     });
   }));
-}const { FormRow: FormRow$1 } = components.Forms;
-const { ScrollView: ScrollView$1 } = common.ReactNative;
+}const { ScrollView: ScrollView$1 } = common.ReactNative;
+const { FormRadioRow } = components.Forms;
 const lengths = [
   "auto",
   "short",
@@ -80,22 +76,16 @@ const lengths = [
 ];
 function DefaultLength() {
   storage.useProxy(settings);
-  return /* @__PURE__ */ common.React.createElement(ScrollView$1, {
-    style: {
-      flex: 1
-    }
-  }, lengths.map(function(length) {
-    return /* @__PURE__ */ common.React.createElement(FormRow$1, {
+  return /* @__PURE__ */ common.React.createElement(ScrollView$1, null, lengths.map(function(length) {
+    return /* @__PURE__ */ common.React.createElement(FormRadioRow, {
       label: FriendlyLengthNames[length],
-      trailing: function() {
-        return /* @__PURE__ */ common.React.createElement(FormRow$1.Arrow, null);
-      },
       onPress: function() {
         if (settings.defaultLength == length)
           return;
         settings.defaultLength = length;
         toasts.showToast(`Saved format to ${FriendlyLengthNames[length]}`, assets.getAssetIDByName("check"));
-      }
+      },
+      selected: settings.defaultLength === length
     });
   }));
 }const { FormRow, FormDivider, FormInput, FormSection } = components.Forms;
@@ -149,7 +139,7 @@ function Settings() {
       return settings.apiKey = "";
     }
   })), categories.map(function(param) {
-    let { label, sublabel, icon, render } = param;
+    let { label, sublabel, icon, render, renderTitle } = param;
     return /* @__PURE__ */ common.React.createElement(FormRow, {
       label,
       subLabel: sublabel,
@@ -161,7 +151,7 @@ function Settings() {
       },
       onPress: function() {
         return navigation.push("VendettaCustomPage", {
-          title: "Model",
+          title: renderTitle,
           render
         });
       }
