@@ -4,6 +4,6 @@
 import { getAssetIDByName } from "@vendetta/ui/assets";
 
 export default {
-    Delete: getAssetIDByName('ic_message_delete'),
-    Edit: getAssetIDByName("ic_edit_24px")
-}
+    Delete: getAssetIDByName("ic_message_delete"),
+    Edit: getAssetIDByName("ic_edit_24px"),
+};
