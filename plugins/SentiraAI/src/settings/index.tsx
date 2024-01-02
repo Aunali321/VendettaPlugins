@@ -52,7 +52,7 @@ export default () => {
                     placeholder={"Enter your SentiraAI API Key"}
                     value={settings.apiKey}
                     onChange={(v: string) => {
-                        settings.apiKey = v;
+                        settings.apiKey = v.trim();
                     }}
                 />
                 <FormDivider />
