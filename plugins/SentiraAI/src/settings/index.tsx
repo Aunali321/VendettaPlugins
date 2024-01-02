@@ -39,7 +39,7 @@ export default () => {
             sublabel: FriendlyLengthNames[settings.length],
             icon: "ic_activity_24px",
             render: length,
-            renderTitle: "length"
+            renderTitle: "Length"
         }
     ]
 
@@ -65,7 +65,7 @@ export default () => {
             </FormSection>
 
             {
-                categories.map(({ label, sublabel, icon, render }) => (
+                categories.map(({ label, sublabel, icon, render, renderTitle }) => (
                     <FormRow
                         label={label}
                         subLabel={sublabel}
@@ -77,7 +77,7 @@ export default () => {
                         trailing={() => <FormRow.Arrow />}
                         onPress={() =>
                             navigation.push("VendettaCustomPage", {
-                                title: "Model",
+                                title: renderTitle,
                                 render: render,
                             })
                         }
