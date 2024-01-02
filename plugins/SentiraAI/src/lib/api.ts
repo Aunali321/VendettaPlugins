@@ -12,16 +12,18 @@ export class SentiraAI {
         this.apiKey = apiKey;
     }
 
-    public async summarize(body: SummarizeRequestBody): Promise<SummarizeResponse> {
+    public async summarize(
+        body: SummarizeRequestBody
+    ): Promise<SummarizeResponse> {
         logger.info("Summarize method called");
         logger.info(`Summarize request body: ${JSON.stringify(body)}`);
         const response = await fetch(`${this.baseUrl}/summarize`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': this.apiKey
+                "Content-Type": "application/json",
+                "x-api-key": this.apiKey,
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify(body),
         });
 
         if (!response.ok) {
@@ -36,8 +38,8 @@ export class SentiraAI {
             tokensProcessed: data.tokensProcessed,
             response: {
                 id: data.response.id,
-                summary: data.response.summary
-            }
+                summary: data.response.summary,
+            },
         };
     }
 }

@@ -3,7 +3,7 @@ export const enum ApplicationCommandInputType {
     BUILT_IN_TEXT,
     BUILT_IN_INTEGRATION,
     BOT,
-    PLACEHOLDER
+    PLACEHOLDER,
 }
 
 export const enum ApplicationCommandOptionType {
@@ -17,11 +17,11 @@ export const enum ApplicationCommandOptionType {
     ROLE,
     MENTIONABLE,
     NUMBER,
-    ATTACHMENT
+    ATTACHMENT,
 }
 
 export const enum ApplicationCommandType {
     CHAT = 1,
     USER,
-    MESSAGE
+    MESSAGE,
 }
