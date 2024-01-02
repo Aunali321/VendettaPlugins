@@ -1,70 +1,4 @@
-(function(exports,_vendetta,plugin,assets,common,components,storage,commands,metro,toasts){'use strict';function _class_call_check(instance, Constructor) {
-    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}function _defineProperties(target, props) {
-    for(var i = 0; i < props.length; i++){
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-    }
-}
-function _create_class(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-}function _define_property(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else obj[key] = value;
-    return obj;
-}let SentiraAI = /* @__PURE__ */ function() {
-  function SentiraAI2(baseUrl, apiKey) {
-    _class_call_check(this, SentiraAI2);
-    _define_property(this, "baseUrl", void 0);
-    _define_property(this, "apiKey", void 0);
-    _vendetta.logger.info("SentiraAI API initialized");
-    this.baseUrl = baseUrl;
-    this.apiKey = apiKey;
-  }
-  _create_class(SentiraAI2, [
-    {
-      key: "summarize",
-      value: async function summarize(body) {
-        _vendetta.logger.info("Summarize method called");
-        _vendetta.logger.info(`Summarize request body: ${JSON.stringify(body)}`);
-        const response = await fetch(`${this.baseUrl}/summarize`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": this.apiKey
-          },
-          body: JSON.stringify(body)
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to summarize: ${response.statusText}`);
-        }
-        const data = await response.json();
-        _vendetta.logger.info(`Summarize response: ${JSON.stringify(data)}`);
-        return {
-          result: data.result,
-          creditsUsed: data.creditsUsed,
-          tokensProcessed: data.tokensProcessed,
-          response: {
-            id: data.response.id,
-            summary: data.response.summary
-          }
-        };
-      }
-    }
-  ]);
-  return SentiraAI2;
-}();var icons = {
+(function(exports,_vendetta,plugin,assets,common,components,storage,commands,toasts){'use strict';var icons = {
   Delete: assets.getAssetIDByName("ic_message_delete"),
   Edit: assets.getAssetIDByName("ic_edit_24px")
 };const FriendlyLengthNames = {
@@ -203,7 +137,7 @@ function Settings() {
     placeholder: "Enter your SentiraAI API Key",
     value: settings.apiKey,
     onChange: function(v) {
-      settings.apiKey = v;
+      settings.apiKey = v.trim();
     }
   }), /* @__PURE__ */ common.React.createElement(FormDivider, null), /* @__PURE__ */ common.React.createElement(FormRow, {
     label: "Log out of SentiraAI",
@@ -233,9 +167,89 @@ function Settings() {
       }
     });
   }));
-}metro.findByProps("sendMessage", "receiveMessage");
-metro.findByProps("sendBotMessage");
-let patches = [];
+}function _class_call_check(instance, Constructor) {
+    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}function _defineProperties(target, props) {
+    for(var i = 0; i < props.length; i++){
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+    }
+}
+function _create_class(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+}function _define_property(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else obj[key] = value;
+    return obj;
+}let SentiraAI = /* @__PURE__ */ function() {
+  function SentiraAI2(baseUrl, apiKey) {
+    _class_call_check(this, SentiraAI2);
+    _define_property(this, "baseUrl", void 0);
+    _define_property(this, "apiKey", void 0);
+    _vendetta.logger.info("SentiraAI API initialized");
+    this.baseUrl = baseUrl;
+    this.apiKey = apiKey;
+  }
+  _create_class(SentiraAI2, [
+    {
+      key: "summarize",
+      value: async function summarize(body) {
+        _vendetta.logger.info("Summarize method called");
+        _vendetta.logger.info(`Summarize request body: ${JSON.stringify(body)}`);
+        const response = await fetch(`${this.baseUrl}/summarize`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": this.apiKey
+          },
+          body: JSON.stringify(body)
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to summarize: ${response.statusText}`);
+        }
+        const data = await response.json();
+        _vendetta.logger.info(`Summarize response: ${JSON.stringify(data)}`);
+        return {
+          result: data.result,
+          creditsUsed: data.creditsUsed,
+          tokensProcessed: data.tokensProcessed,
+          response: {
+            id: data.response.id,
+            summary: data.response.summary
+          }
+        };
+      }
+    }
+  ]);
+  return SentiraAI2;
+}();async function getSummary(args) {
+  _vendetta.logger.info("SentiraAI summarize command executed");
+  const message = args[0].value;
+  const length = args[1]?.value;
+  const format = settings.format;
+  const model = settings.model;
+  const sentiraAI = new SentiraAI("https://api.sentiraai.com", plugin.storage["apiKey"]);
+  let summary = await sentiraAI.summarize({
+    text: message,
+    summaryLength: length,
+    summaryFormat: format,
+    model
+  });
+  return {
+    content: summary.response.summary
+  };
+}let patches = [];
 const settings = plugin.storage;
 settings.model = "command-light";
 settings.format = "paragraph";
@@ -287,23 +301,6 @@ var index = {
       type: 1,
       execute: getSummary
     }));
-    async function getSummary(args, ctx) {
-      _vendetta.logger.info("SentiraAI summarize command executed");
-      const message = args[0].value;
-      const length = args[1]?.value;
-      const format = settings.format;
-      const model = settings.model;
-      const sentiraAI = new SentiraAI("http://sentiraai.auna.li", plugin.storage.apiKey || "54321");
-      let summary = await sentiraAI.summarize({
-        text: message,
-        summaryLength: length,
-        summaryFormat: format,
-        model
-      });
-      return {
-        content: summary.response
-      };
-    }
   },
   onUnload: function() {
     _vendetta.logger.info("SentiraAI unloaded");
@@ -311,4 +308,4 @@ var index = {
       unpatch();
   },
   settings: Settings
-};exports.default=index;exports.settings=settings;Object.defineProperty(exports,'__esModule',{value:true});return exports;})({},vendetta,vendetta.plugin,vendetta.ui.assets,vendetta.metro.common,vendetta.ui.components,vendetta.storage,vendetta.commands,vendetta.metro,vendetta.ui.toasts);
+};exports.default=index;exports.settings=settings;Object.defineProperty(exports,'__esModule',{value:true});return exports;})({},vendetta,vendetta.plugin,vendetta.ui.assets,vendetta.metro.common,vendetta.ui.components,vendetta.storage,vendetta.commands,vendetta.ui.toasts);
