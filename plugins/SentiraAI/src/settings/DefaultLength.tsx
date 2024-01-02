@@ -1,31 +1,34 @@
-import { getAssetIDByName } from "@vendetta/ui/assets"
-import { React, ReactNative } from "@vendetta/metro/common"
-import { Forms, Summary } from "@vendetta/ui/components"
-import { showToast } from "@vendetta/ui/toasts"
-import { useProxy } from "@vendetta/storage"
-import { settings } from ".."
-import { FriendlyLengthNames, SummaryLength } from "../lib/types"
-
-const { FormRow } = Forms
-const { ScrollView } = ReactNative
+import { getAssetIDByName } from "@vendetta/ui/assets";
+import { React, ReactNative } from "@vendetta/metro/common";
+import { useProxy } from "@vendetta/storage";
+import { settings } from "..";
+import { FriendlyLengthNames, SummaryLength } from "../lib/types";
+import { showToast } from "@vendetta/ui/toasts";
+import { Forms } from "@vendetta/ui/components";
+const { ScrollView } = ReactNative;
+const { FormRadioRow } = Forms;
 
 const lengths: SummaryLength[] = ["auto", "short", "medium", "long"];
 
 export default () => {
-    useProxy(settings)
+    useProxy(settings);
+
     return (
-        <ScrollView style={{ flex: 1 }}>
-            {
-                lengths.map((length) => <FormRow
+        <ScrollView>
+            {lengths.map((length) => (
+                <FormRadioRow
                     label={FriendlyLengthNames[length]}
-                    trailing={() => <FormRow.Arrow />}
                     onPress={() => {
-                        if (settings.defaultLength == length) return
-                        settings.defaultLength = length
-                        showToast(`Saved format to ${FriendlyLengthNames[length]}`, getAssetIDByName("check"))
+                        if (settings.defaultLength == length) return;
+                        settings.defaultLength = length;
+                        showToast(
+                            `Saved format to ${FriendlyLengthNames[length]}`,
+                            getAssetIDByName("check")
+                        );
                     }}
-                />)
-            }
+                    selected={settings.defaultLength === length}
+                />
+            ))}
         </ScrollView>
-    )
-}
+    );
+};
