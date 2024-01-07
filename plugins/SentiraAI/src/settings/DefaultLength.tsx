@@ -8,7 +8,7 @@ import { Forms } from "@vendetta/ui/components";
 const { ScrollView } = ReactNative;
 const { FormRadioRow } = Forms;
 
-const lengths: SummaryLength[] = ["auto", "short", "medium", "long"];
+const lengths: SummaryLength[] = ["short", "medium", "long"];
 
 export default () => {
     useProxy(settings);

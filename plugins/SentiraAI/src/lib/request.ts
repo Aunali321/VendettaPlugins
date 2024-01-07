@@ -1,24 +1,24 @@
 import { logger } from "@vendetta";
 import { settings } from "..";
-import { SentiraAI } from "./api";
 import { storage } from "@vendetta/plugin";
+import { SentiraAIClient } from "@sentira-ai/common/sentira_client";
+
+let client = new SentiraAIClient(storage["apiKey"]);
+
 
 export async function getSummary(args) {
-    logger.info("SentiraAI summarize command executed");
-    const message = args[0].value;
-    const length = args[1]?.value;
-    const format = settings.format;
-    const model = settings.model;
-    const sentiraAI = new SentiraAI(
-        "https://api.sentiraai.com",
-        storage["apiKey"]
-    );
-    let summary = await sentiraAI.summarize({
-        text: message,
-        summaryLength: length,
-        summaryFormat: format,
-        model: model,
-    });
 
-    return { content: summary.response.summary };
+    logger.info("SentiraAI getSummary called");
+    let summarize = await client.summarize(
+        {
+            text: args[0].value,
+            summaryLength: args[1]?.value,
+            summaryFormat: settings.format,
+            model: settings.model,
+            userId: "",
+        }
+    )
+    logger.info(summarize.response.summary);
+    return { content: summarize.response.summary };
+
 }

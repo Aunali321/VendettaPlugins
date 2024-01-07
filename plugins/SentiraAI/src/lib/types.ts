@@ -10,10 +10,9 @@ export interface Response {
     summary: string;
 }
 
-export type SummaryLength = "auto" | "short" | "medium" | "long";
+export type SummaryLength = "short" | "medium" | "long";
 
 export const FriendlyLengthNames: Record<SummaryLength, string> = {
-    auto: "Auto",
     short: "Short",
     medium: "Medium",
     long: "Long",

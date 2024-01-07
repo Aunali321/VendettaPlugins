@@ -24,7 +24,7 @@ settings.model = "command-light";
 settings.format = "paragraph";
 settings.defaultLength = "medium";
 
-const lengthChoices: SummaryLength[] = ["auto", "short", "medium", "long"];
+const lengthChoices: SummaryLength[] = ["short", "medium", "long"];
 
 export default {
     onLoad: () => {
