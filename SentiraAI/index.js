@@ -1,8 +1,7 @@
-(function(exports,_vendetta,plugin,assets,common,components,storage,commands,toasts){'use strict';var icons = {
+(function(exports,_vendetta,plugin,assets,common,components,storage,commands,sentira_client,toasts){'use strict';var icons = {
   Delete: assets.getAssetIDByName("ic_message_delete"),
   Edit: assets.getAssetIDByName("ic_edit_24px")
 };const FriendlyLengthNames = {
-  auto: "Auto",
   short: "Short",
   medium: "Medium",
   long: "Long"
@@ -69,7 +68,6 @@ function Format() {
 }const { ScrollView: ScrollView$1 } = common.ReactNative;
 const { FormRadioRow } = components.Forms;
 const lengths = [
-  "auto",
   "short",
   "medium",
   "long"
@@ -157,87 +155,19 @@ function Settings() {
       }
     });
   }));
-}function _class_call_check(instance, Constructor) {
-    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-}function _defineProperties(target, props) {
-    for(var i = 0; i < props.length; i++){
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-    }
-}
-function _create_class(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-}function _define_property(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else obj[key] = value;
-    return obj;
-}let SentiraAI = /* @__PURE__ */ function() {
-  function SentiraAI2(baseUrl, apiKey) {
-    _class_call_check(this, SentiraAI2);
-    _define_property(this, "baseUrl", void 0);
-    _define_property(this, "apiKey", void 0);
-    _vendetta.logger.info("SentiraAI API initialized");
-    this.baseUrl = baseUrl;
-    this.apiKey = apiKey;
-  }
-  _create_class(SentiraAI2, [
-    {
-      key: "summarize",
-      value: async function summarize(body) {
-        _vendetta.logger.info("Summarize method called");
-        _vendetta.logger.info(`Summarize request body: ${JSON.stringify(body)}`);
-        const response = await fetch(`${this.baseUrl}/summarize`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": this.apiKey
-          },
-          body: JSON.stringify(body)
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to summarize: ${response.statusText}`);
-        }
-        const data = await response.json();
-        _vendetta.logger.info(`Summarize response: ${JSON.stringify(data)}`);
-        return {
-          result: data.result,
-          creditsUsed: data.creditsUsed,
-          tokensProcessed: data.tokensProcessed,
-          response: {
-            id: data.response.id,
-            summary: data.response.summary
-          }
-        };
-      }
-    }
-  ]);
-  return SentiraAI2;
-}();async function getSummary(args) {
-  _vendetta.logger.info("SentiraAI summarize command executed");
-  const message = args[0].value;
-  const length = args[1]?.value;
-  const format = settings.format;
-  const model = settings.model;
-  const sentiraAI = new SentiraAI("https://api.sentiraai.com", plugin.storage["apiKey"]);
-  let summary = await sentiraAI.summarize({
-    text: message,
-    summaryLength: length,
-    summaryFormat: format,
-    model
+}let client = new sentira_client.SentiraAIClient(plugin.storage["apiKey"]);
+async function getSummary(args) {
+  _vendetta.logger.info("SentiraAI getSummary called");
+  let summarize = await client.summarize({
+    text: args[0].value,
+    summaryLength: args[1]?.value,
+    summaryFormat: settings.format,
+    model: settings.model,
+    userId: ""
   });
+  _vendetta.logger.info(summarize.response.summary);
   return {
-    content: summary.response.summary
+    content: summarize.response.summary
   };
 }let patches = [];
 const settings = plugin.storage;
@@ -245,7 +175,6 @@ settings.model = "command-light";
 settings.format = "paragraph";
 settings.defaultLength = "medium";
 const lengthChoices = [
-  "auto",
   "short",
   "medium",
   "long"
@@ -298,4 +227,4 @@ var index = {
       unpatch();
   },
   settings: Settings
-};exports.default=index;exports.settings=settings;Object.defineProperty(exports,'__esModule',{value:true});return exports;})({},vendetta,vendetta.plugin,vendetta.ui.assets,vendetta.metro.common,vendetta.ui.components,vendetta.storage,vendetta.commands,vendetta.ui.toasts);
+};exports.default=index;exports.settings=settings;Object.defineProperty(exports,'__esModule',{value:true});return exports;})({},vendetta,vendetta.plugin,vendetta.ui.assets,vendetta.metro.common,vendetta.ui.components,vendetta.storage,vendetta.commands,sentira_client,vendetta.ui.toasts);
