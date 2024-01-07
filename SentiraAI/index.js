@@ -155,9 +155,9 @@ function Settings() {
       }
     });
   }));
-}let client = new sentira_client.SentiraAIClient(plugin.storage["apiKey"]);
-async function getSummary(args) {
+}async function getSummary(args) {
   _vendetta.logger.info("SentiraAI getSummary called");
+  let client = new sentira_client.SentiraAIClient(plugin.storage["apiKey"]);
   let summarize = await client.summarize({
     text: args[0].value,
     summaryLength: args[1]?.value,
