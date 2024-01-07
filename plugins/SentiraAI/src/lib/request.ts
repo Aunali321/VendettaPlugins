@@ -3,12 +3,13 @@ import { settings } from "..";
 import { storage } from "@vendetta/plugin";
 import { SentiraAIClient } from "@sentira-ai/common/sentira_client";
 
-let client = new SentiraAIClient(storage["apiKey"]);
 
 
 export async function getSummary(args) {
 
     logger.info("SentiraAI getSummary called");
+    let client = new SentiraAIClient(storage["apiKey"]);
+
     let summarize = await client.summarize(
         {
             text: args[0].value,
