@@ -1,9 +1,7 @@
 import { logger } from "@vendetta";
 import { settings } from "..";
 import { storage } from "@vendetta/plugin";
-import { SentiraAIClient } from "@sentira-ai/common/sentira_client";
-
-
+import { SentiraAIClient } from "@sentira-ai/common";
 
 export async function getSummary(args) {
 
