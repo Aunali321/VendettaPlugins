@@ -7,6 +7,7 @@ import esbuild from "rollup-plugin-esbuild";
 import commonjs from "@rollup/plugin-commonjs";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import swc from "@swc/core";
+import json from "@rollup/plugin-json";
 
 const extensions = [".js", ".jsx", ".mjs", ".ts", ".tsx", ".cts", ".mts"];
 
@@ -14,6 +15,7 @@ const extensions = [".js", ".jsx", ".mjs", ".ts", ".tsx", ".cts", ".mts"];
 const plugins = [
   nodeResolve(),
   commonjs(),
+  json(),
   {
     name: "swc",
     async transform(code, id) {
